@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - return only a single valid DOT line of code.

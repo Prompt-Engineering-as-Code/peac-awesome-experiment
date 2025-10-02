@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - "Format each question or guess as [Question/Guess {n}]:"

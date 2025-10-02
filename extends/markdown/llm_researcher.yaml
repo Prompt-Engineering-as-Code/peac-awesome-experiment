@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - markdown.yaml
+  output: 
+      base:
+        -  (Overview, Reason, Procedure, Purpose, References, Next Step).

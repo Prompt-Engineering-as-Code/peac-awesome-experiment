@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Explanation in chronological order where applicable.

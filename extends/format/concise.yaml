@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Keep paragraphs short, direct, and evocative. Avoid technical jargon unless it enhances clarity.

@@ -1,0 +1,4 @@
+prompt:
+  context:
+    base:
+      - Infer any missing details sensibly from common scenarios in this domain.

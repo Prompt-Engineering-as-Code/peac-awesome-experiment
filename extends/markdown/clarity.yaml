@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - markdown.yaml
+  output: 
+      base:
+        - short paragraphs, and bullet points where that improves clarity

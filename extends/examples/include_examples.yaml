@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Include brief examples or snippets when they help the user act immediately.

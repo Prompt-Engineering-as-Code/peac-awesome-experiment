@@ -1,0 +1,4 @@
+prompt:
+  context:
+    base:
+      - Draw on relevant background knowledge the user might expect 

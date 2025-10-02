@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - relevant_background.yaml
+  context:
+    base:
+      - (e.g., child development, safety protocols, creative play)

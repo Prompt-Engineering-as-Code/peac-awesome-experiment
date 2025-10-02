@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - "Maintain the following tone:"

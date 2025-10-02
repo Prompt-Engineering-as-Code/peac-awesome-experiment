@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - markdown.yaml
+  output: 
+      base:
+        - table format where appropriate

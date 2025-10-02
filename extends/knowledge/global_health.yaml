@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - relevant_background.yaml
+  context:
+    base:
+      - environmental agencies, global health organizations (e.g., WHO, UNEP), and peer-reviewed studies.

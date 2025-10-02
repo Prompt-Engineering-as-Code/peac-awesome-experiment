@@ -1,0 +1,4 @@
+prompt:
+  instruction:
+    base:
+      - When I need to tell you something in English, I will do it by wrapping it in curly brackets like {like this}.

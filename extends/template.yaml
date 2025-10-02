@@ -1,0 +1,12 @@
+prompt:
+  intruction:
+      base: 
+        - A
+  context:
+      base:
+          - base A 
+          - base B
+  output:
+      base:
+        - base A
+        - base B

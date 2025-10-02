@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - markdown.yaml
+  output: 
+      base:
+        - provide examples if they help clarify 

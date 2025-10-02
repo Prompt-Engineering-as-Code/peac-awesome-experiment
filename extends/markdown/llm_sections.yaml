@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - markdown.yaml
+  output: 
+      base:
+        - Test Prompts, Risks, Mitigation Strategies, Guidelines, Next Step

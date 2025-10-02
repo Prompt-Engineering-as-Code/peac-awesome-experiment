@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - relevant_background.yaml
+  context:
+    base:
+      - (e.g., popular sites, regional landmarks, cultural relevance).

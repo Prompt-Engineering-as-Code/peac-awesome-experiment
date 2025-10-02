@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - relevant_background.yaml
+  context:
+    base:
+      - such as effective study habits and motivational techniques
