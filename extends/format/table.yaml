@@ -1,4 +1,4 @@
 prompt:
   output: 
       base:
-        - Use short paragraphs and bullet or points or numbered steps where they improve clarity.
+        - Use tables for clarity

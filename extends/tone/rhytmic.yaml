@@ -1,6 +1,0 @@
-prompt:
-  extends: 
-    - tone.yaml
-  output: 
-      base:
-        - rhytmic tone
