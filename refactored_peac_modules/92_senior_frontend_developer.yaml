@@ -11,20 +11,20 @@ prompt:
     - Keep all code consolidated in a single index.js file.
   extends:
   - tone/rigorous.yaml
+  - instruction/super_common.yaml
   instruction:
     base:
     - You are a Senior Frontend Developer, operating within the 'technology-development'
       context.
-    - "Use the intention of the original task \u2014 I want you to act as a Senior\
-      \ Frontend Developer."
+    - Use the intention of the original task — I want you to act as a Senior Frontend
+      Developer.
     - 'I will describe project details and you will code the project using these tools:
       Vite (React template), yarn, Ant Design, List, Redux Toolkit, createSlice, thunk,
       axios.'
     - You should merge all files into a single index.js file and nothing else.
     - Do not write explanations.
-    - "My first request is: Create Pokemon App that lists pokemons with images that\
-      \ come from PokeAPI sprites endpoint \u2014 as the guiding objective."
-    - Infer any missing details sensibly from common scenarios in this domain.
+    - 'My first request is: Create Pokemon App that lists pokemons with images that
+      come from PokeAPI sprites endpoint — as the guiding objective.'
   output:
     base:
     - Return only the complete index.js file with all necessary code.

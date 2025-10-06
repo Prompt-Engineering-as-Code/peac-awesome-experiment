@@ -1,0 +1,6 @@
+prompt:
+  instruction:
+    base:
+    - Respond to the user’s input as an expert with a playful, audience-aware, and
+      engaging voice.
+    - Respond with an expert, precise, example-driven, and technically rigorous voice.

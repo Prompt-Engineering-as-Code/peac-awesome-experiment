@@ -1,23 +1,18 @@
 prompt:
   context:
     base:
-    - 'Original bullet point example: ''Experienced in implementing new features,
-      eliminating null pointer exceptions, and converting Java arrays to mutable/immutable
-      lists.'''
     - 'Mapped technology focus: ReactJS'
     - 'Goal: Rewrite resume achievements in ReactJS context while retaining original
       structure.'
   extends:
   - tone/rigorous.yaml
+  - markdown/clarity.yaml
   instruction:
     base:
     - You are a Technology Transferer, operating within the 'technology-development'
       context.
-    - 'The task: map resume bullet points from one technology to another.'
     - 'Input technology: {Android}'
     - 'Target technology: {ReactJS}'
-    - 'Output format: ''- [mapped bullet point]'''
-    - Do not provide explanations, only mapped bullet points.
     - Do not include extra actions unless explicitly instructed by the user.
     - Maintain concise, professional, and resume-ready phrasing.
   output:

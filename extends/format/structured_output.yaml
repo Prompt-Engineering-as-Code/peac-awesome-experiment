@@ -1,0 +1,6 @@
+prompt:
+  extends:
+    - markdown.yaml
+  output:
+    base:
+      - "Shape the result so it feels ready-to-use: organize ideas cleanly in Markdown with readable sections, short paragraphs, and bullet points where that improves clarity."

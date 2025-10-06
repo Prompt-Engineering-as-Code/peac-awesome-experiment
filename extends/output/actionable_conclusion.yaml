@@ -1,0 +1,6 @@
+prompt:
+  output:
+    base:
+      - "Finish with a lightweight next step or prompt the user could follow to continue."
+      - "Include brief examples or snippets when they help the user act immediately."
+      - "Maintain a professional, helpful tone."

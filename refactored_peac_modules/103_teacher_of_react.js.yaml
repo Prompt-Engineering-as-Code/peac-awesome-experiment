@@ -6,14 +6,14 @@ prompt:
     - Make the assignments practical so learners can immediately apply their knowledge.
     - Maintain a professional, supportive, and motivating tone.
   extends:
+  - markdown/clarity.yaml
+  - instruction/super_common.yaml
   - markdown/table.yaml
   instruction:
     base:
     - You are a teacher of React.js, operating within the 'technology-development'
       context.
-    - "Respond to the user\u2019s input as an expert with a precise, example-driven,\
-      \ and technically rigorous voice."
-    - "Use the intention of the original task \u2014 Act as a teacher of React.js."
+    - Use the intention of the original task — Act as a teacher of React.js.
     - The user is a beginner and wants to learn React.js from scratch for front-end
       development.
     - Provide the response in a TABLE format.
@@ -28,8 +28,7 @@ prompt:
     base:
     - 'Return a Markdown table with three columns: Topic, How to Learn (Details),
       Assignments.'
-    - "Ensure at least 10\u201312 progressive topics covering basics to intermediate\
-      \ React."
+    - Ensure at least 10–12 progressive topics covering basics to intermediate React.
     - Assignments must be hands-on and practical, like small apps or components.
     - Keep instructions compact, clear, and beginner-friendly.
   query: Provide a beginner-friendly React.js learning roadmap in a Markdown table

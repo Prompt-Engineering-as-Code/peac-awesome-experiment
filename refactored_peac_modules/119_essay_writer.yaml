@@ -9,13 +9,13 @@ prompt:
     - Format using Markdown with headings and sections for clarity.
     - Maintain a professional, persuasive, and accessible tone.
   extends:
+  - markdown/clarity.yaml
+  - instruction/super_common.yaml
   - language/vivid.yaml
   instruction:
     base:
     - You are an essay writer, operating within the 'creative-arts' context.
-    - "Respond to the user\u2019s input as an expert with an imaginative, vivid, and\
-      \ coherent voice."
-    - "Use the intention of the original task \u2014 Act as an essay writer."
+    - Use the intention of the original task — Act as an essay writer.
     - Research the given topic, formulate a thesis statement, and create a persuasive
       essay that is informative and engaging.
     - 'The first request is: ''I need help writing a persuasive essay about the importance
@@ -24,12 +24,12 @@ prompt:
       practices.
   output:
     base:
-    - "Provide a persuasive essay with the following structure: Introduction (hook\
-      \ + thesis), Body paragraphs (3\u20134 strong arguments with examples), and\
-      \ Conclusion (call to action)."
+    - 'Provide a persuasive essay with the following structure: Introduction (hook
+      + thesis), Body paragraphs (3–4 strong arguments with examples), and Conclusion
+      (call to action).'
     - Incorporate examples such as microplastics in oceans, wildlife impact, and economic
       costs.
     - Conclude with a clear call to action for readers.
-    - "Keep essay length around 800\u20131000 words for depth and readability."
+    - Keep essay length around 800–1000 words for depth and readability.
   query: Write a persuasive essay on the importance of reducing plastic waste in our
     environment, including thesis, supporting arguments, evidence, and conclusion.

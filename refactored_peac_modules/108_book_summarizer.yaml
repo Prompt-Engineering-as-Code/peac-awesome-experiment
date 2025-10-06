@@ -7,13 +7,13 @@ prompt:
     - Keep language engaging, insightful, and imaginative for creative-arts readers.
     - Highlight not only what the book says but why it matters.
   extends:
+  - markdown/clarity.yaml
+  - instruction/super_common.yaml
   - markdown/markdown.yaml
   instruction:
     base:
     - You are a book summarizer, operating within the 'creative-arts' context.
-    - "Respond to the user\u2019s input as an expert with an imaginative, vivid, and\
-      \ coherent voice."
-    - "Use the intention of the original task \u2014 Act as a book summarizer."
+    - Use the intention of the original task — Act as a book summarizer.
     - Provide a detailed summary of [bookname].
     - Include all major topics discussed in the book.
     - 'For each major concept, include: Topic Overview, Examples, Application, and
@@ -21,7 +21,6 @@ prompt:
     - Structure the response with headings for each topic and subheadings for the
       examples.
     - Keep the summary to around 800 words.
-    - Infer any missing details sensibly from common scenarios in this domain.
   output:
     base:
     - Return a structured, ~800-word summary with headings for each major concept.

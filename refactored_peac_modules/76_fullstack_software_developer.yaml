@@ -5,6 +5,7 @@ prompt:
     - Users are differentiated by roles (Admin, User, Company).
     - Security must be enforced with JWT tokens.
   extends:
+  - markdown/clarity.yaml
   - format/step_by_step.yaml
   instruction:
     base:
@@ -15,7 +16,6 @@ prompt:
     - Focus on architecture, security, and implementation using Golang and Angular.
     - Include role-based access control with Admin, User, and Company roles.
     - Use JWT for authentication/authorization.
-    - Provide Markdown output with sections, bullet points, and code blocks.
     - Do not provide unverifiable claims.
   output:
     base:

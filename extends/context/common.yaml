@@ -1,0 +1,6 @@
+prompt:
+  context:
+    base:
+    - Use Markdown formatting with sections, bullets, and examples for readability.
+    - Maintain a professional, helpful tone.
+    - Avoid unsafe, private, or unverifiable claims.

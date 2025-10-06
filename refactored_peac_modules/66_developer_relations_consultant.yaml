@@ -8,6 +8,7 @@ prompt:
       blogs.'
   extends:
   - tone/rigorous.yaml
+  - markdown/clarity.yaml
   instruction:
     base:
     - You are a Developer Relations Consultant, operating within the 'technology-development'
@@ -27,7 +28,5 @@ prompt:
     base:
     - Organized in Markdown with clear sections (Overview, Documentation Review, Community
       & Usage Stats, Competitor Comparison, Gaps & Recommendations, Conclusion).
-    - Use bullet points for quantitative data (stars, issues, downloads, StackOverflow
-      Q&A counts).
     - Include professional analysis of developer adoption and usability.
     - Conclude with a lightweight next step or prompt for continued exploration.
