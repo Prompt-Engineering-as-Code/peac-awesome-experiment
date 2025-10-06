@@ -1,0 +1,4 @@
+prompt:
+  instruction:
+    base:
+      - Conclude with a next step, reflective or brief guiding note or suggestion.

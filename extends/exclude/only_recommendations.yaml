@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - You should only reply with the items you recommend, and nothing else. Do not write explanations.

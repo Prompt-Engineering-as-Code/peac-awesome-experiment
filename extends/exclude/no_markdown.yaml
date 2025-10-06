@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Do not wrap the output in markdown formatting

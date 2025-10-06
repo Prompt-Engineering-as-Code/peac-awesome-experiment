@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Return only the properly formatted commit message.

@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Format dialogue in Markdown using indented blocks or quotation marks for direct speech.

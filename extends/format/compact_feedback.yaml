@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Ensure feedback is structured, compact, and actionable.

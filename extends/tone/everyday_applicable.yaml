@@ -1,0 +1,7 @@
+
+prompt:
+  extends: 
+    - tone.yaml
+  output: 
+      base:
+        - easily applicable to everyday life tone

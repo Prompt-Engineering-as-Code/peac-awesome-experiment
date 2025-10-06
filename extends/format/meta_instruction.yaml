@@ -1,0 +1,4 @@
+prompt:
+  instruction: 
+      base:
+        - When the user includes text in curly brackets {like this}, treat it as meta-instructions and not part of the technical content.

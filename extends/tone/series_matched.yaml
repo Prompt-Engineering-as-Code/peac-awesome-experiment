@@ -1,0 +1,12 @@
+prompt:
+  extends:
+    - tone.yaml
+  output:
+    base:
+      - series matched tone
+prompt:
+  extends:
+    - tone.yaml
+  output:
+    base:
+      - Match phrasing, mood, and pacing to the series’ established tone; be consistent across episodes or entries.

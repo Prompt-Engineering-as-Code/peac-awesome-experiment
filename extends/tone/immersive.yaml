@@ -1,0 +1,6 @@
+prompt:
+  extends: 
+    - tone.yaml
+  output: 
+      base:
+        - immersive tone

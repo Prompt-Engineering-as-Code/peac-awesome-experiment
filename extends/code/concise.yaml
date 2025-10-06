@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Ensure the code is valid, concise, and ready to run.

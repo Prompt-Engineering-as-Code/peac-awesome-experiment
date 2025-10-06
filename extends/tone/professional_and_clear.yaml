@@ -1,0 +1,5 @@
+
+prompt:
+  output: 
+      base:
+        - Maintain a professional, helpful tone; avoid unsafe, private, or unverifiable claims; and finish with a lightweight next step or prompt the user could follow to continue.

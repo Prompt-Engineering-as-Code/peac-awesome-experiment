@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Explain, present information or guide the user in a step-by-step way to enhance understanding.

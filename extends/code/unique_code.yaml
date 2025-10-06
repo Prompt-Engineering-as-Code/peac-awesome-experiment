@@ -1,0 +1,4 @@
+prompt:
+  output: 
+      base:
+        - Only reply with the output inside one unique code block, and nothing else.

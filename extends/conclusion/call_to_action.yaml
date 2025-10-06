@@ -1,0 +1,4 @@
+prompt:
+  instruction:
+    base:
+      - Finish with a call to action, a reflection or actionable step
