@@ -1,4 +1,4 @@
 prompt:
   output: 
       base:
-        - Do not include explanations or commentary
+        - Do not include unrelated information 
