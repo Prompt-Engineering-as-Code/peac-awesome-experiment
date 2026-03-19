@@ -1,0 +1,259 @@
+\section{Experiment}
+\label{sec:experiment}
+
+This section validates Contribution 4 (evaluation metrics) and provides empirical evidence for Contributions 1--2 (specification and modularity). It primarily addresses RQ2: \emph{Does modular prompt composition improve token efficiency and reuse?} We address this through a controlled experiment comparing non-modular prompts (baseline) against refactored modular PEaC modules. We introduce three novel metrics---Token Reduction Ratio (TRR), Reuse Efficiency (RE), and Modularity Index (MI)---specifically designed to quantify modularization effectiveness. Additionally, we employ semantic similarity analysis to validate that refactoring preserves prompt semantics. This experimental design establishes construct validity (metrics measure intended properties), internal validity (controlled comparison), and external validity (real-world prompt dataset from ``Awesome ChatGPT Prompts'').
+
+The study quantifies the benefits of the PEaC modular prompting approach in terms of token savings and structural maintainability. To this end, we compared two sets of PEaC modules: one comprising non-modular, self-contained modules, and another consisting of refactored modular PEaC modules. The complete process, from the ``Awesome ChatGPT Prompts'' dataset to the generation of the final PEaC modules, is illustrated in Figure~\ref{fig:process-dataset}.
+
+\begin{figure}[pos=ht!]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figs/peac-dataset-process-construction.drawio.png}
+    \caption{Process followed to construct the dataset used in the experiment}
+    \label{fig:process-dataset}
+\end{figure}
+
+\subsection{Dataset}
+As no suitable dataset was available, we constructed a synthetic one using prompts from the publicly available ``Awesome ChatGPT Prompts'' repository~\footnote{https://github.com/f/awesome-chatgpt-prompts}. This section describes the process used to generate the synthetic dataset for this experiment.
+
+\subsubsection{The ``Awesome ChatGPT Prompts'' dataset}
+The ``Awesome ChatGPT Prompts'' dataset was developed as an open-source collection of diverse prompts for use with LLM models. The project also provides a web interface\footnote{\url{https://prompts.chat/}, accessed on 29/09/2025} that allows users to view, edit, and copy prompts for their preferred LLM service. All prompts are compiled into a \texttt{csv} file with three columns:
+\begin{itemize}
+    \item \texttt{act}: a short, descriptive role that the AI is expected to adopt, which defines the context for the interaction.
+    \item \texttt{prompt}: the detailed instructions and task for the AI to follow, acting in the role defined in the \texttt{act} column. 
+    \item \texttt{for\_devs}: a boolean value indicating whether the prompt's content is technical or development-related. 
+\end{itemize}
+Anyone can contribute new prompts to the collection, but all submissions are subject to review by maintainers via the GitHub ``Pull Request'' feature prior to acceptance. The dataset comprises 215 prompts spanning 10 domains (see Table~\ref{tab:prompts-per-domain}), including entertainment, education, technology, health, and business. The collection was downloaded in September 2025 under the repository's open license.
+
+\begin{table}[pos=h!]
+\centering
+\renewcommand{\arraystretch}{1.2} % aumenta l'altezza delle righe
+\begin{tabularx}{\textwidth}{X >{\centering\arraybackslash}p{2cm}}
+\toprule
+\textbf{Domain} & \textbf{\#prompts} \\
+\midrule
+Entertainment Games & 18 \\
+Education Training & 30 \\
+Technology Development & 59 \\
+Creative Arts & 25 \\
+Health Wellness & 17 \\
+Business Finance & 21 \\
+Utilities Tools & 13 \\
+Specialized Roles & 12 \\
+Personal Lifestyle & 19 \\
+Talk & 1 \\
+\midrule
+\textbf{Total} & \textbf{215} \\
+\bottomrule
+\end{tabularx}
+\caption{Number of prompts per domain}
+\label{tab:prompts-per-domain}
+\end{table}
+\lstinputlisting[style=shellstyle, caption=A single dataset entry in the Awesome ChatGPT Prompts dataset, captionpos=b, label=lst:awesome-prompt-example]{listings/dataset/entry.txt}
+
+
+\subsubsection{Enriching the ``Awesome ChatGPT Prompts'' Dataset}
+The dataset comprises a variety of well-crafted prompts spanning multiple domains, primarily focused on providing specific instructions. 
+Listing~\ref{lst:awesome-prompt-example} presents an example of a single entry from the dataset.
+
+All prompts in the dataset adhere to this structure. 
+Consequently, the dataset does not facilitate a comprehensive analysis of the distinct sections that constitute a complex prompt.
+
+A key limitation is the absence of existing datasets containing well-structured prompt components, such as context, instruction, output, and other relevant sections. 
+Therefore, we needed to create a synthetic dataset that included these sections. 
+
+
+
+To better capture the complexity of prompt engineering (such as diverse instruction rules, output formats, and contextual information), we enriched these prompts by leveraging ChatGPT-5. Specifically, we provided the LLM with requirements and requested enhanced versions of the original prompts, adding more context, output specifications, and relevant details. 
+
+As an example, Listing~\ref{lst:awesome-enriched-prompt} shows the enriched version of the prompt shown in Listing~\ref{lst:awesome-prompt-example}.
+
+Appendix~\ref{sec:experiment-one} shows the prompt used to generate the enriched version.
+\lstinputlisting[style=shellstyle, caption=An enriched version of the prompt shown in Listing~\ref{lst:awesome-prompt-example}, captionpos=b, label=lst:awesome-enriched-prompt]{listings/dataset/enriched.txt}
+
+Once the enriched prompts were obtained, we converted them into two types of PEaC modules:
+
+\begin{enumerate}
+    \item non-modular, self-contained PEaC modules, which are direct translations of each enriched prompt into the PEaC specification;
+\item modular PEaC modules, which are refactored modules sharing common sections, such as output formats or context information.
+\end{enumerate}
+These pairs constituted the final dataset used in the experiment to compute the metrics defined in Section~\ref{sec:metrics}.
+
+Listing~\ref{lst:non-modular} and \ref{lst:modular} show an example of the two types of PEaC modules used to compute metrics described in Section~\ref{sec:metrics}.
+
+
+\lstinputlisting[style=yamlstyle, caption={Non-modular PEaC module for the enriched prompt shown in Listing~\ref{lst:awesome-enriched-prompt}}, label=lst:non-modular]
+{listings/dataset/non-modular-clean.yaml}
+
+\lstinputlisting[style=yamlstyle, caption={Modular PEaC module for the enriched prompt shown in Listing~\ref{lst:awesome-enriched-prompt}}, label=lst:modular]
+{listings/dataset/modular-clean.yaml}
+
+
+
+\subsubsection{The PEaC dataset generation process}
+To generate these two versions of PEaC modules, we continued to use ChatGPT-5. 
+Using a second prompt, we produced a non-modular PEaC module for each enriched prompt.
+We employed a few-shot learning strategy---providing the complete YAML example described in Section~\ref{sec:specification} along with the EBNF specification grammar shown in Listing~\ref{lst:ebnf-grammar} to enable GPT-5 to generate valid PEaC modules (see Appendix~\ref{sec:experiment-two}). The LLM generated a bundled zip file containing \textit{210 non-modular PEaC modules}. GPT-5 did not convert five prompts, as these contained prohibited content, such as attempts to jailbreak the LLM, flirtation, or gaslighting.
+
+After reviewing the generated PEaC modules using the PEaC CLI, we refactored them to create modular PEaC modules.
+
+To identify reusable components and extract base modules, we employed multiple complementary refactoring strategies (illustrated in Figure~\ref{fig:process-dataset}). First, we parsed the non-modular PEaC modules and extracted individual sentences. We then applied two main strategies: (i) \textit{semantic similarity clustering}, where sentences were embedded using the efficient \texttt{all-MiniLM-L6-v2} model and grouped based on cosine similarity; and (ii) \textit{keyword-based grouping}, where we performed lexical searches to identify sentences with similar meanings or recurring patterns. For each cluster of recurring sentences, we extracted a dedicated base PEaC module, which was subsequently imported by other modules as needed. Once these base modules were created, we refactored the non-modular PEaC modules by replacing redundant sentences with references to shared modules via the \texttt{extends} section.
+
+In summary, this process resulted in two sets of artifacts: non-modular, self-contained PEaC modules with redundant content, and modular PEaC modules that extend shared base modules.
+
+
+\begin{comment}
+The LLM produced refactored prompts by organizing shared modules into one context grounding prompt, nine domain-related contexts, and five output ``packs'', each corresponding to different types of guidelines (formatting, tone, safety, examples, and next-steps information).
+
+Each output was carefully reviewed and required several iterations to achieve satisfactory results. Generated modules were validated using the EBNF specification grammar and by running the PEaC CLI. 
+
+\end{comment}
+
+
+\subsubsection{Considerations on the limitations of the generated dataset}
+We emphasize that our goal was not to obtain a perfect dataset, but rather to create a preliminary one to illustrate the intuitive benefits of using a modular approach. Specifically, we aimed to compare the number of tokens in the unique PEaC modules generated from enriched prompts with those in the refactored PEaC modules. Further studies are needed to establish a `gold standard' dataset and to validate this preliminary experiment.
+
+
+%Figure~\ref{} illustrates 
+
+\subsection{Analyzed metrics}
+\label{sec:metrics}
+
+As described in the previous sections, to evaluate the benefits of PEaC modularization, we compare two representations of the same corpus of 210 enriched prompts.
+
+\begin{enumerate}
+    \item \emph{non-modular PEaC modules}: each prompt is stored as a fully self-contained PEaC module, with common elements (e.g., recurring context or stylistic guidelines) duplicated across modules;
+    \item \emph{refactored PEaC modules}: recurring elements are extracted into separate base modules, and leaf tasks import them via the \texttt{extends} keyword. In this representation, each base module is counted once, along with all leaf modules (without expanding the \texttt{extends} section).
+\end{enumerate}
+
+This comparison allows us to quantify both the reduction in token usage and the structural properties of the modular corpus. 
+
+To evaluate these aspects, we introduce three novel metrics specifically designed for assessing prompt modularization:
+\begin{itemize}
+        \item \textbf{Token Reduction Ratio (TRR)};
+        \item \textbf{Reuse Efficiency (RE)};
+        \item \textbf{Modularity Index (MI)}.
+\end{itemize}
+
+These metrics are introduced in this paper to quantify the benefits of modular prompt engineering. The TRR measures the overall reduction in token usage when moving from the flat to the modular representation. Let $\Sigma T_{orig}$ be the total token count across all self-contained prompts, and let $\Sigma T_{peac}$ be the total token count of the refactored PEaC corpus (with base modules counted once, plus all leaf modules). We define:
+\[
+TRR = \frac{\Sigma T_{orig} - \Sigma T_{peac}}{\Sigma T_{orig}} \times 100 \, .
+\]
+A higher TRR indicates that redundancies have been effectively removed through modularization.
+
+While TRR captures the global reduction, it does not measure the intensity of reuse. For this, we define Reuse Efficiency as:
+\[
+RE = \frac{\sum_{m \in M} \big( T(m) \times reuse(m) \big)}{\Sigma T_{orig}} \times 100 \, ,
+\]
+where $M$ is the set of base modules, $T(m)$ is the token count of module $m$, and $reuse(m)$ is the number of leaf prompts that import $m$. This metric reflects how many tokens are \emph{saved in practice} because a base module is reused rather than duplicated. In theory, $RE$ may exceed $100\%$ when a base module is reused many times. In our dataset, $RE = 51.25\%$.
+
+Finally, we introduce the Modularity Index to capture structural richness.  
+Let $|M|$ be the number of unique base modules, $|L|$ the number of leaf prompts, and $d_{avg}$ the average number of base modules extended by each leaf.  
+We define:
+\[
+MI = \frac{|M|}{|L|} \times d_{avg} \, .
+\]
+This metric increases as the corpus employs more distinct modules and as leaves compose them with greater inheritance depth, reflecting the granularity and compositional strength of modularization.
+
+
+\subsection{Results}
+
+Following the methodology described above, we compared the self-contained corpus with the refactored PEaC corpus, in which repeated elements were extracted into base modules and leaf modules imported them via the \texttt{extends} mechanism. In the refactored representation, each base module was counted only once, along with all leaf modules.
+
+The results are summarized in Table~\ref{tab:metrics}. The self-contained PEaC modules contained a total of 65,145 tokens. After modular refactoring, the unique token count decreased to 49,465, yielding a Token Reduction Ratio of 24.07\%. This indicates that roughly one-quarter of redundant tokens were eliminated through reuse. The Reuse Efficiency of 51.25\% demonstrates that the extracted modules were valid and moderately leveraged across the 210 leaf modules. Finally, the Modularity Index of 2.707 reflects a substantial compositional structure, with an average inheritance depth of 3.29 modules per task, highlighting the effective modularization achieved through the creation of 173 base modules.
+
+\begin{table}[pos=h]
+\centering
+\caption{Quantitative evaluation of modular prompting with PEaC. 
+$\Sigma T_{orig}$: total tokens in original self-contained modules; 
+$\Sigma T_{peac}$: total tokens after PEaC modularization; 
+$|M|$: number of reusable base modules created; 
+$|L|$: number of leaf prompt modules; 
+$d_{avg}$: average inheritance depth per leaf; 
+$TRR$: token reduction ratio (\%); 
+$RE$: reuse efficiency (\%); 
+$MI$: modularity index measuring compositional complexity.}
+\label{tab:metrics}
+\begin{tabular}{@{} M{0.45\textwidth} M{0.35\textwidth} @{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+$\Sigma T_{orig}$ & 65,145 \\
+$\Sigma T_{peac}$ & 49,465 \\
+$|M|$ & 173 \\
+$|L|$ & 210 \\
+$d_{avg}$ & 3.29 \\
+$TRR$ & 24.07\,\% \\
+$RE$ & 51.25\,\% \\
+$MI$ & 2.707 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Figure~\ref{fig:tokenreduction} compares token counts before and after modularization.
+The two-bar chart highlights an absolute reduction of over 15,000 tokens.
+It also reports a relative saving of 24.07\%.
+Together, these values demonstrate the practical benefits of adopting PEaC.
+
+
+\begin{figure}[pos=h!]
+\centering
+\includegraphics[width=0.9\linewidth]{figs/peac_token_reduction_diagram.pdf}
+\caption{Token counts before and after PEaC modularization. The reduction represents a saving of 24.07\% in total tokens.}
+\label{fig:tokenreduction}
+\end{figure}
+
+Taken together, these findings demonstrate that PEaC's modular design enables a substantial reduction in redundancy. Beyond statistical savings, the ability to centralize recurring elements in base modules offers significant maintainability advantages: modifications to a single base definition are consistently propagated to all dependent tasks. This combination of efficiency and maintainability suggests that modular prompting is not merely an optimization, but a methodological necessity for managing large-scale prompt collections.
+
+\subsection{Statistical Reporting}
+
+To strengthen statistical rigor, we analyzed paired token differences between original and refactored files across all prompt modules ($n=210$). Let $\Delta_i = T_{\mathrm{peac},i} - T_{\mathrm{orig},i}$, where negative values indicate token reduction after refactoring.
+
+The paired differences had mean $\mu=-84.33$, standard deviation $\sigma=67.18$, variance $\sigma^2=4513.74$, and standard error $SE=4.64$. The median paired difference was $-52.00$ tokens, with interquartile range $IQR=135.00$ (Q1 $=-156.00$, Q3 $=-21.00$). The estimated 95\% confidence interval for the mean difference was [$-93.47$, $-75.19$]. These values indicate substantial heterogeneity in reduction magnitude across files.
+
+A Shapiro--Wilk test showed strong deviations from normality ($W=0.821$, $p<0.0001$). Given this non-normality, and to guard against potential asymmetry in the distribution of paired differences, we used the Wilcoxon signed-rank test as the primary inferential test. The test indicated a highly significant negative shift ($W=0.00$, $z=-12.57$, $p<0.0001$). Notably, all 210 paired differences were negative. As a parametric robustness check, a paired $t$-test provided convergent evidence ($t=-18.19$, $df=209$, $p<0.0001$). The effect size was large (Cohen's $d_z=-1.26$; Wilcoxon $r=-0.87$).
+
+These results provide strong evidence against the null hypothesis of no paired difference and support the conclusion that PEaC refactoring systematically reduces token counts.
+
+\subsection{Semantic Similarity Analysis}
+\label{sec:semantic-similarity}
+
+A natural concern is whether modular prompts maintain semantic equivalence to their self-contained counterparts. To address this question, we conducted a semantic similarity analysis comparing the 210 self-contained prompt modules with their modularized equivalents after PEaC refactoring.
+
+We compare four natural language processing metrics for the final prompt text generated by self-contained modules with those for the prompt text generated by modularized PEaC modules:
+\begin{itemize}
+    \item \textbf{Cosine Similarity (TF-IDF)}: measures semantic similarity through term frequency-inverse document frequency vector representations;
+    \item \textbf{BLEU Score}~\citep{papineni-etal-2002-bleu}: evaluates lexical overlap using modified n-gram precision;
+    \item \textbf{BERTScore}~\citep{zhang2020bertscoreevaluatingtextgeneration}: leverages transformer-based contextual embeddings to assess semantic similarity at the token level;
+    \item \textbf{ROUGE}~\citep{lin-2004-rouge}: measures n-gram overlap and longest common subsequence matching.
+\end{itemize}
+
+Table~\ref{tab:semantic-metrics} presents the semantic similarity scores across all 210 prompt pairs. The consistently high scores across all metrics provide strong evidence of semantic preservation.
+
+\begin{table}[pos=h!]
+\centering
+\caption{Semantic similarity between self-contained and modularized prompts across 210 pairs. Values represent mean $\pm$ standard deviation.}
+\label{tab:semantic-metrics}
+\begin{tabular}{@{} M{0.40\textwidth} M{0.30\textwidth} @{}}
+\toprule
+\textbf{Metric} & \textbf{Score (mean $\pm$ std)} \\
+\midrule
+Cosine Similarity (TF-IDF) & 0.944 $\pm$ 0.039 \\
+BLEU Score & 0.701 $\pm$ 0.192 \\
+BERTScore F1 & 0.930 $\pm$ 0.028 \\
+BERTScore Precision & 0.928 $\pm$ 0.036 \\
+BERTScore Recall & 0.932 $\pm$ 0.021 \\
+ROUGE-1 F1 & 0.838 $\pm$ 0.109 \\
+ROUGE-2 F1 & 0.794 $\pm$ 0.121 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The cosine similarity of 0.944 and BERT Score F1 of 0.930 indicate that modularized prompts preserve semantic content with over 93\% fidelity. Since large language models respond primarily to semantic content rather than syntactic structure, these high similarity scores suggest that modularized prompts should elicit equivalent responses from LLMs. Convergent evidence across four independent metrics indicates that PEaC modularization preserves semantic equivalence.
+
+However, we emphasize that \textbf{semantic equivalence analysis was not the primary objective of the present study}. Our contribution is to present a framework for modular prompt engineering and to demonstrate its feasibility using token-reduction metrics. The semantic similarity analysis provides supplementary evidence that modularization does not compromise the prompt content. Comprehensive task-specific performance evaluation studies remain a focus of future research.
+
+\subsection{Accessibility and Reproducibility}
+
+A core design principle of PEaC is accessibility: enabling prompt engineers without specialized infrastructure to use modular composition and semantic retrieval on general-purpose hardware. To ensure accessibility, we validated implementation performance across FastEmbed and FAISS RAG providers on a 100-document synthetic corpus (1.02 MB total). Results demonstrate suitability for typical prompt engineering workflows (100--1000 documents): FastEmbed prioritizes accessibility with zero PyTorch dependencies and pure-Python implementation, while FAISS excels for production deployments requiring sub-10ms query latency. Both providers exhibit equivalent index creation overhead (\textasciitilde 36 seconds), indicating that embedding generation dominates computational cost rather than index construction and that neither provider presents prohibitive barriers on consumer hardware.
+
+To facilitate validation and extension, we provide comprehensive reproducibility infrastructure including Docker containerization~\citep{Cito2016Docker}, automated test suites (114 functional tests), and a deterministic benchmark protocol.\footnote{Complete reproducibility documentation, test suite source code, and Docker configurations are provided in \texttt{REPRODUCIBILITY.md} at \url{https://github.com/Prompt-Engineering-as-Code/peac}.} This infrastructure enables researchers to validate our contributions and build upon the PEaC foundation without requiring specialized expertise in containerization or experimental design.
